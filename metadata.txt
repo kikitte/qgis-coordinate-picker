@@ -1,0 +1,9 @@
+[general]
+name=CoordinatePicker
+qgisMinimumVersion=3.0
+description=Pick various types of coordinate with one click.
+about=Pick various types of coordinate with one click, including coordinates in layer CRS, coordinates in project CRS, coordinates in WGS84, coordinates in row/col for raster layer.
+version=1.0
+author=kikitte
+email=kikitte.lee@gmail.com
+repository=https://github.com/kikitte/qgis-coordinate-picker
