@@ -54,18 +54,27 @@ class CoordinatePickerTool(QgsMapToolEmitPoint):
         self.coordinates = []
 
         mapCoord = super().toMapCoordinates(screenPoint)
+        self.coordinates.insert(0, Coordinate(Coordinate.MapCoord, mapCoord.x(), mapCoord.y(), activeLayerName))
 
+        wgs84Coord = None
         canvasCRS = self.mapCanvas.mapSettings().destinationCrs()
         if canvasCRS == epsg4326:
             wgs84Coord = mapCoord
         else:
             sourceCRS = activeLayer.crs() if activeLayer else canvasCRS
             transform = QgsCoordinateTransform(sourceCRS, epsg4326, QgsProject.instance())
-            wgs84Coord = transform.transform(mapCoord.x(), mapCoord.y())
+            try:
+                # transformation may throw an error, just ignore it
+                wgs84Coord = transform.transform(mapCoord.x(), mapCoord.y())
+            except:
+                pass
+        if wgs84Coord is not None:
+            self.coordinates.append(Coordinate(Coordinate.WGS84Coord, wgs84Coord.x(), wgs84Coord.y(), activeLayerName))
 
         if activeLayer:
             layerCoord = super().toLayerCoordinates(activeLayer, screenPoint)
-            self.coordinates.append(Coordinate(Coordinate.LayerCoord, layerCoord.x(), layerCoord.y(), activeLayerName))
+            self.coordinates.insert(0,
+                                    Coordinate(Coordinate.LayerCoord, layerCoord.x(), layerCoord.y(), activeLayerName))
 
             if isinstance(activeLayer, QgsRasterLayer):
                 rasterExtent = activeLayer.extent()
@@ -74,10 +83,6 @@ class CoordinatePickerTool(QgsMapToolEmitPoint):
                     rasterPixelY = int((rasterExtent.yMaximum() - layerCoord.y()) / activeLayer.rasterUnitsPerPixelY())
                     self.coordinates.insert(0, Coordinate(Coordinate.RasterPixelCord, rasterPixelX, rasterPixelY,
                                                           activeLayerName))
-
-        self.coordinates.append(Coordinate(Coordinate.MapCoord, mapCoord.x(), mapCoord.y(), activeLayerName))
-
-        self.coordinates.append(Coordinate(Coordinate.WGS84Coord, wgs84Coord.x(), wgs84Coord.y(), activeLayerName))
 
     def showCoordinates(self):
         if self.coordinates:
