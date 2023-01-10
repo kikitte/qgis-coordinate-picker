@@ -78,10 +78,14 @@ class CoordinatePickerTool(QgsMapToolEmitPoint):
 
             if isinstance(activeLayer, QgsRasterLayer):
                 rasterExtent = activeLayer.extent()
+                rasterWidth = activeLayer.width()
                 if rasterExtent.contains(layerCoord):
                     rasterPixelX = int((layerCoord.x() - rasterExtent.xMinimum()) / activeLayer.rasterUnitsPerPixelX())
                     rasterPixelY = int((rasterExtent.yMaximum() - layerCoord.y()) / activeLayer.rasterUnitsPerPixelY())
                     self.coordinates.insert(0, Coordinate(Coordinate.RasterPixelCord, rasterPixelX, rasterPixelY,
+                                                          activeLayerName))
+                    self.coordinates.insert(0, Coordinate(Coordinate.RasterPixelIndex,
+                                                          rasterPixelY * rasterWidth + rasterPixelX, None,
                                                           activeLayerName))
 
     def showCoordinates(self):
@@ -113,6 +117,7 @@ class Coordinate:
     WGS84Coord = 2  # coordinate in WGS84
     MapCoord = 3  # coordinate in project crs
     RasterPixelCord = 4  # coordinate in raster grid
+    RasterPixelIndex = 5  # cell index in raster grid
 
     def __init__(self, type, x, y, layerName=None):
         self.type = type
@@ -123,6 +128,8 @@ class Coordinate:
     def coordinate_str(self):
         if self.type == Coordinate.RasterPixelCord:
             return '{y}, {x}'.format(x=self.x, y=self.y)
+        elif self.type == Coordinate.RasterPixelIndex:
+            return '{index}'.format(index=self.x)
         else:
             return '{x}, {y}'.format(x=self.x, y=self.y)
 
@@ -136,5 +143,7 @@ class Coordinate:
             return '{name}(Project CRS): {coordinate_str}'.format(name=layerName, coordinate_str=self.coordinate_str())
         elif self.type == Coordinate.RasterPixelCord:
             return '{name}(Row, Col): {coordinate_str}'.format(name=layerName, coordinate_str=self.coordinate_str())
+        elif self.type == Coordinate.RasterPixelIndex:
+            return '{name}(Cell Index): {coordinate_str}'.format(name=layerName, coordinate_str=self.coordinate_str())
 
         return 'unknown coordinate type'
