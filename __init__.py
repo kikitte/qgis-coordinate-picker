@@ -1,3 +1,3 @@
 def classFactory(iface):
-    from .plugin_coordinate_picker import CoordinatePicker
-    return CoordinatePicker(iface)
+    from .plugin_coordinate_picker import CoordinatePickerGUI
+    return CoordinatePickerGUI(iface)
