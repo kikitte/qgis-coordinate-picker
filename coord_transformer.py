@@ -123,6 +123,14 @@ def lonlat_to_nipoint(lon, lat):
     return x_coord, y_coord
 
 
+def nipoint_to_lonlat(x, y):
+    u = 90 / (2 ** 30)
+    x = (np.int64(x) << 30) / (np.int64(90) * np.int64(100000)) * u
+    y = (np.int64(y) << 30) / (np.int64(90) * np.int64(100000)) * u
+
+    return x, y
+
+
 class Transform:
     @staticmethod
     def transformLat(x, y):
@@ -159,3 +167,7 @@ class Transform:
     @staticmethod
     def lonlat2nipoint(lon, lat):
         return lonlat_to_nipoint(lon, lat)
+
+    @staticmethod
+    def nipoint2lonlat(x, y):
+        return nipoint_to_lonlat(x, y)

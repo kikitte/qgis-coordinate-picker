@@ -26,18 +26,18 @@ class CoordFormater:
     def __repr__(self):
         layerName = self._layerName if self._layerName is not None else 'Map'
         if self._type == CoordFormater.LayerCoord:
-            return '{name}(Layer CRS): {coordinate_str}'.format(name=layerName, coordinate_str=self.coordinate_str())
+            return 'Layer CRS:\t{name}\t{coordinate_str}'.format(name=layerName, coordinate_str=self.coordinate_str())
         elif self._type == CoordFormater.WGS84Coord:
-            return '{name}(WGS84): {coordinate_str}'.format(name=layerName, coordinate_str=self.coordinate_str())
+            return 'WGS84:\t{name}\t{coordinate_str}'.format(name=layerName, coordinate_str=self.coordinate_str())
         elif self._type == CoordFormater.MapCoord:
-            return '{name}(Project CRS): {coordinate_str}'.format(name=layerName, coordinate_str=self.coordinate_str())
+            return 'Project CRS:\t{name}\t{coordinate_str}'.format(name=layerName, coordinate_str=self.coordinate_str())
         elif self._type == CoordFormater.RasterPixelCord:
-            return '{name}(Row, Col): {coordinate_str}'.format(name=layerName, coordinate_str=self.coordinate_str())
+            return 'Row, Col:\t{name}\t{coordinate_str}'.format(name=layerName, coordinate_str=self.coordinate_str())
         elif self._type == CoordFormater.RasterPixelIndex:
-            return '{name}(Cell Index): {coordinate_str}'.format(name=layerName, coordinate_str=self.coordinate_str())
+            return 'Cell Index:\t{name}\t{coordinate_str}'.format(name=layerName, coordinate_str=self.coordinate_str())
         elif self._type == CoordFormater.NI_ITE:
-            return '{name}(ITE): {coordinate_str}'.format(name=layerName, coordinate_str=self.coordinate_str())
+            return 'ITE:\t{name}\t{coordinate_str}'.format(name=layerName, coordinate_str=self.coordinate_str())
         elif self._type == CoordFormater.NI_ITE_MARS:
-            return '{name}(ITE_MARS): {coordinate_str}'.format(name=layerName, coordinate_str=self.coordinate_str())
+            return 'ITE_MARS:\t{name}\t{coordinate_str}'.format(name=layerName, coordinate_str=self.coordinate_str())
 
         return 'unknown coordinate type'

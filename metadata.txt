@@ -1,5 +1,5 @@
 [general]
-name=Coordinate_PickGo
+name=Coordinate_PickZoom
 qgisMinimumVersion=3.0
 description=Pick various types of coordinate with one click and Zoom to clipboard coordinate with one click.
 about=

@@ -9,7 +9,7 @@ from .coord_transformer import Transform
 epsg4326 = QgsCoordinateReferenceSystem('EPSG:4326')
 
 
-class CoordinatePickerTool(QgsMapToolEmitPoint):
+class CoordinatePicker(QgsMapToolEmitPoint):
 
     def __init__(self, iface):
         self.iface = iface
